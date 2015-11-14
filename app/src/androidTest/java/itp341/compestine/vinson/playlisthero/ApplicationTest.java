@@ -1,6 +1,5 @@
 package itp341.compestine.vinson.playlisthero;
 
-
 import android.app.Application;
 import android.test.ApplicationTestCase;
 
