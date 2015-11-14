@@ -6,6 +6,9 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -13,6 +16,8 @@ import java.util.ArrayList;
 public class insidePlaylist extends Activity {
 
     SongSingleton songsSingleton;
+    ArrayList<Song> songs;
+    Song holder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,7 +26,7 @@ public class insidePlaylist extends Activity {
 
         songsSingleton = SongSingleton.getInstance();
         Intent i = getIntent();
-        ArrayList<Song> songs = songsSingleton.getSongs();
+        songs = songsSingleton.getSongs();
         SongAdapter adapter = new SongAdapter(this, songs);
 
         ListView listView = (ListView)findViewById(R.id.songList);
@@ -31,6 +36,8 @@ public class insidePlaylist extends Activity {
         Drawable yonder = getResources().getDrawable(R.drawable.yonder);
         Song testSong = new Song("Bolton Stretch", "Yonder Mountain String Band",yonder, 50);
         songsSingleton.newSong(testSong);
+
+       
 
 
     }
