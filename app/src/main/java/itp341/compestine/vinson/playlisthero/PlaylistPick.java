@@ -1,6 +1,5 @@
 package itp341.compestine.vinson.playlisthero;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
@@ -8,40 +7,50 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity extends Activity {
+public class PlaylistPick extends Activity {
 
-    Button test;
 
+    PlaylistsSingleton playListSingleton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActionBar actionBar = getActionBar();
-        actionBar.hide();
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_playlist_pick);
 
-        test = (Button)findViewById(R.id.testButton);
+        playListSingleton = PlaylistsSingleton.getInstance();
 
-        test.setOnClickListener(new View.OnClickListener() {
+        ArrayList<Playlist> playlists = playListSingleton.getList();
+        PlaylistAdapter adapter = new PlaylistAdapter(this, playlists);
+
+        ListView listView = (ListView) findViewById(R.id.currentPlaylists);
+        listView.setAdapter(adapter);
+
+        //Test ListView
+        Drawable drawable = getResources().getDrawable(R.drawable.we_be_jammin_400x400);
+        Playlist test = new Playlist(drawable, "Jam Sesh", "900");
+        playListSingleton.newPlaylist(test);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, PlaylistPick.class);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent i = new Intent(PlaylistPick.this, insidePlaylist.class);
+                i.putExtra("songIndex", position);
                 startActivity(i);
             }
         });
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_playlist_pick, menu);
         return true;
     }
 

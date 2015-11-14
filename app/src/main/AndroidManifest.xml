@@ -16,6 +16,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".PlaylistPick"
+            android:label="@string/title_activity_playlist_pick" >
+        </activity>
+        <activity
+            android:name=".insidePlaylist"
+            android:label="@string/title_activity_inside_playlist" >
+        </activity>
     </application>
 
 </manifest>

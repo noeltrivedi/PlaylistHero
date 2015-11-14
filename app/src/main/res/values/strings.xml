@@ -3,4 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_playlist_pick">PlaylistPick</string>
+    <string name="Title" >Playlist Hero</string>
+    <string name = "CurrentPlaying">Current Playlists</string>
+    <string name="title_activity_inside_playlist">insidePlaylist</string>
 </resources>

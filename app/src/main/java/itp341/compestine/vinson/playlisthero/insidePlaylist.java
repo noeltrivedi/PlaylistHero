@@ -1,47 +1,44 @@
 package itp341.compestine.vinson.playlisthero;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity extends Activity {
+public class insidePlaylist extends Activity {
 
-    Button test;
-
+    SongSingleton songsSingleton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActionBar actionBar = getActionBar();
-        actionBar.hide();
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_inside_playlist);
 
-        test = (Button)findViewById(R.id.testButton);
+        songsSingleton = SongSingleton.getInstance();
+        Intent i = getIntent();
+        ArrayList<Song> songs = songsSingleton.getSongs();
+        SongAdapter adapter = new SongAdapter(this, songs);
 
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, PlaylistPick.class);
-                startActivity(i);
-            }
-        });
+        ListView listView = (ListView)findViewById(R.id.songList);
+        listView.setAdapter(adapter);
+
+        //Test ListView
+        Drawable yonder = getResources().getDrawable(R.drawable.yonder);
+        Song testSong = new Song("Bolton Stretch", "Yonder Mountain String Band",yonder, 50);
+        songsSingleton.newSong(testSong);
+
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_inside_playlist, menu);
         return true;
     }
 
