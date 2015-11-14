@@ -1,16 +1,44 @@
 package itp341.compestine.vinson.playlisthero;
+import com.microsoft.windowsazure.mobileservices.*;
+import com.microsoft.windowsazure.mobileservices.http.ServiceFilterResponse;
+import com.microsoft.windowsazure.mobileservices.table.TableOperationCallback;
+
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.net.MalformedURLException;
+
 public class MainActivity extends Activity {
+    private MobileServiceClient mClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        try{mClient = new MobileServiceClient(
+                "https://playerhero.azure-mobile.net/",
+                "BbtKkMKKubarKfNOkjAawsUKVaSgpc25",
+                this
+        );}
+        catch(MalformedURLException me){
+            me.printStackTrace();
+        }
+
+        Item item = new Item();
+        item.Text = "Awesome item";
+        mClient.getTable(Item.class).insert(item, new TableOperationCallback<Item>() {
+            public void onCompleted(Item entity, Exception exception, ServiceFilterResponse response) {
+                if (exception == null) {
+                    // Insert succeeded
+                } else {
+                    // Insert failed
+                }
+            }
+        });
+
     }
 
     @Override
@@ -34,4 +62,10 @@ public class MainActivity extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public class Item {
+        public String Id;
+        public String Text;
+    }
+
 }
