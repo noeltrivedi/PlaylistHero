@@ -25,16 +25,11 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
-=======
-        ActionBar actionBar = getActionBar();
-        actionBar.hide();
 
         //Allow retrieval of images
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
->>>>>>> origin/master
         setContentView(R.layout.activity_main);
 
         Thread timerThread = new Thread(){
