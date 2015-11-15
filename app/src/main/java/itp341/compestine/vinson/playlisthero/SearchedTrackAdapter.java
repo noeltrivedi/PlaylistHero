@@ -1,11 +1,14 @@
 package itp341.compestine.vinson.playlisthero;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ public class SearchedTrackAdapter extends ArrayAdapter<Song> {
 
         }
 
+
         TextView tvName = (TextView)convertView.findViewById(R.id.searchedTrackName);
         TextView tvArtist = (TextView)convertView.findViewById(R.id.searchedTrackArtist);
         ImageView tvAlbum = (ImageView)convertView.findViewById(R.id.searchedTrackAlbum);
@@ -31,7 +35,11 @@ public class SearchedTrackAdapter extends ArrayAdapter<Song> {
         tvName.setText(song.getName());
         tvArtist.setText(song.getArtist());
         tvAlbum.setImageDrawable(song.getSongArt());
+
         this.notifyDataSetChanged();
+        ((ListView)parent).invalidateViews();
+
+
         return convertView;
     }
 }

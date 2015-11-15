@@ -12,7 +12,9 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,11 +45,9 @@ public class AddSong extends Activity {
         EditText searchBar = (EditText)findViewById(R.id.searchBar);
         searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
-            {
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
-                if(actionId == EditorInfo.IME_ACTION_SEND || event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
-                {
+                if (actionId == EditorInfo.IME_ACTION_SEND || event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                     handled = true;
                     String search = v.getText().toString();
                     search.trim().replace(' ', '+');
@@ -58,6 +58,33 @@ public class AddSong extends Activity {
             }
         });
 
+    }
+
+    public void onTableRowClick(View view)
+    {
+        String songName = ((TextView)view.findViewById(R.id.searchedTrackName)).getText().toString();
+        String songArtist = ((TextView)view.findViewById(R.id.searchedTrackArtist)).getText().toString();
+        ArrayList<Song> songs = SearchSingleton.getInstance().getSongs();
+        Song song = null;
+        for(Song s : songs)
+        {
+            if(s.getName().equals(songName) && s.getArtist().equals(songArtist))
+            {
+                song = s;
+            }
+        }
+        if(song == null) {
+            Log.e("ERROR", "Error searching for track " + songName + " in the singleton array");
+            return;
+        }
+        Toast.makeText(this, "Added " + song.getName() + " to the suggestions list (" + song.getVotes() + ")", Toast.LENGTH_LONG).show();
+        SongSingleton.getInstance().newSong(song);
+
+        setResult(insidePlaylist.RESULT_OK);
+
+        finishActivity(insidePlaylist.ADD_SONG_CODE);
+        Intent i = new Intent(AddSong.this, insidePlaylist.class);
+        startActivity(i);
     }
 
     private void searchSong(String search)
