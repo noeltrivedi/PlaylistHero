@@ -1,7 +1,6 @@
 package itp341.compestine.vinson.playlisthero;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,20 +9,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyCallback;
 import kaaes.spotify.webapi.android.SpotifyError;
-import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.TracksPager;
 import retrofit.client.Response;
@@ -32,6 +26,7 @@ public class AddSong extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_song);
 
@@ -77,22 +72,19 @@ public class AddSong extends Activity {
             Log.e("ERROR", "Error searching for track " + songName + " in the singleton array");
             return;
         }
-        Toast.makeText(this, "Added " + song.getName() + " to the suggestions list (" + song.getVotes() + ")", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Added " + song.getName() + " to the suggestions list", Toast.LENGTH_LONG).show();
         SongSingleton.getInstance().newSong(song);
 
-        setResult(insidePlaylist.RESULT_OK);
+        setResult(InsidePlaylist.RESULT_OK);
 
-        finishActivity(insidePlaylist.ADD_SONG_CODE);
-        Intent i = new Intent(AddSong.this, insidePlaylist.class);
+        finishActivity(InsidePlaylist.ADD_SONG_CODE);
+        Intent i = new Intent(AddSong.this, InsidePlaylist.class);
         startActivity(i);
     }
 
     private void searchSong(String search)
     {
-        SpotifyApi api = new SpotifyApi();
-
-        SpotifyService spotify = api.getService();
-        spotify.searchTracks(search, new SpotifyCallback<TracksPager>(){
+        Utils.spotify.searchTracks(search, new SpotifyCallback<TracksPager>(){
             @Override
             public void success(TracksPager tracksPager, Response response)
             {

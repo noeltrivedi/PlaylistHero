@@ -14,6 +14,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.ArtistSimple;
 import kaaes.spotify.webapi.android.models.Image;
 import kaaes.spotify.webapi.android.models.Track;
@@ -22,6 +24,26 @@ import kaaes.spotify.webapi.android.models.Track;
  * Created by Noel on 11/14/2015.
  */
 public class Utils {
+    public static final String client_id = "77ec119ce23f42efb66d5d18fbb04580";
+    private static String authToken = null;
+    private static SpotifyApi api = new SpotifyApi();
+    public static SpotifyService spotify;
+    static
+    {
+        spotify = api.getService();
+    }
+
+    public static void setAuthToken(String token)
+    {
+        authToken = token;
+        api.setAccessToken(authToken);
+    }
+
+    public static String getAuthToken()
+    {
+        return authToken;
+    }
+
     public static String formatArtists(List<ArtistSimple> artists)
     {
         if(artists.size() > 0) {

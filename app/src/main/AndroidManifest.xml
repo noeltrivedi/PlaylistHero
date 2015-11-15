@@ -21,7 +21,7 @@
             android:label="@string/title_activity_playlist_pick" >
         </activity>
         <activity
-            android:name=".insidePlaylist"
+            android:name=".InsidePlaylist"
             android:label="@string/title_activity_inside_playlist" >
         </activity>
         <activity
@@ -31,6 +31,10 @@
         <activity
             android:name=".DJActivity"
             android:label="@string/title_activity_dj" >
+        </activity>
+        <activity
+            android:name="com.spotify.sdk.android.authentication.LoginActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
         </activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />

@@ -2,19 +2,16 @@ package itp341.compestine.vinson.playlisthero;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class insidePlaylist extends Activity {
+public class InsidePlaylist extends Activity {
     public static int ADD_SONG_CODE = 1234, RESULT_OK = 12;
     SongSingleton songsSingleton;
     ArrayList<Song> songs;
@@ -38,8 +35,8 @@ public class insidePlaylist extends Activity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(insidePlaylist.this, AddSong.class);
-                insidePlaylist.this.startActivityForResult(i, ADD_SONG_CODE);
+                Intent i = new Intent(InsidePlaylist.this, AddSong.class);
+                InsidePlaylist.this.startActivityForResult(i, ADD_SONG_CODE);
             }
         });
 
@@ -48,6 +45,7 @@ public class insidePlaylist extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == ADD_SONG_CODE)
         {
             if(resultCode == RESULT_OK)

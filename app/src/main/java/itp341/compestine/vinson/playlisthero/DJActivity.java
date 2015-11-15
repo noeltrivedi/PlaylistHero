@@ -12,9 +12,17 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 
+import com.spotify.sdk.android.player.Config;
+import com.spotify.sdk.android.player.ConnectionStateCallback;
+import com.spotify.sdk.android.player.Player;
+import com.spotify.sdk.android.player.PlayerNotificationCallback;
+import com.spotify.sdk.android.player.PlayerState;
+import com.spotify.sdk.android.player.Spotify;
+
 import java.util.ArrayList;
 
-public class DJActivity extends Activity {
+public class DJActivity extends Activity implements
+        PlayerNotificationCallback, ConnectionStateCallback {
     SuggestedSongSingleton suggestions;
     ArrayList<Song> suggestedSongs;
     SongSingleton accepted;
@@ -22,10 +30,14 @@ public class DJActivity extends Activity {
     ListView queue;
     ListView pending;
 
+    private Player player= null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dj);
+
+        initializePlayer();
 
         //Current playlist
         accepted = SongSingleton.getInstance();
@@ -62,15 +74,27 @@ public class DJActivity extends Activity {
                 acceptedAdapter.notifyDataSetChanged();
             }
         });
-
-
-
-
-
     }
 
 
+    private void initializePlayer()
+    {
+        Config playerConfig = new Config(this, Utils.getAuthToken(), Utils.client_id);
+        player = Spotify.getPlayer(playerConfig, this, new Player.InitializationObserver(){
 
+            @Override
+            public void onInitialized(Player player) {
+                player.addConnectionStateCallback(DJActivity.this);
+                player.addPlayerNotificationCallback(DJActivity.this);
+                player.play("spotify:track:2TpxZ7JUBn3uw46aR7qd6V");
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+
+            }
+        });
+    }
 
 
     @Override
@@ -93,5 +117,46 @@ public class DJActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        Spotify.destroyPlayer(this);
+        super.onDestroy();
+    }
+
+    @Override
+    public void onLoggedIn() {
+
+    }
+
+    @Override
+    public void onLoggedOut() {
+
+    }
+
+    @Override
+    public void onLoginFailed(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onTemporaryError() {
+
+    }
+
+    @Override
+    public void onConnectionMessage(String s) {
+
+    }
+
+    @Override
+    public void onPlaybackEvent(EventType eventType, PlayerState playerState) {
+
+    }
+
+    @Override
+    public void onPlaybackError(ErrorType errorType, String s) {
+
     }
 }

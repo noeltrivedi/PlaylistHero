@@ -1,36 +1,27 @@
 package itp341.compestine.vinson.playlisthero;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Parcel;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.spotify.sdk.android.authentication.AuthenticationClient;
+import com.spotify.sdk.android.authentication.AuthenticationRequest;
+import com.spotify.sdk.android.authentication.AuthenticationResponse;
+
 import java.util.ArrayList;
 
-import kaaes.spotify.webapi.android.SpotifyApi;
-import kaaes.spotify.webapi.android.SpotifyCallback;
-import kaaes.spotify.webapi.android.SpotifyError;
-import kaaes.spotify.webapi.android.SpotifyService;
-import kaaes.spotify.webapi.android.models.Album;
-import kaaes.spotify.webapi.android.models.Pager;
-import kaaes.spotify.webapi.android.models.Track;
-import kaaes.spotify.webapi.android.models.TracksPager;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-
 public class PlaylistPick extends Activity {
-
+    private static final int SPOTIFY_REQUEST_CODE = 1337;
+    private static final String REDIRECT_URI = "crowdj://callback";
 
     PlaylistsSingleton playListSingleton;
     ImageButton DJ;
@@ -41,7 +32,6 @@ public class PlaylistPick extends Activity {
         setContentView(R.layout.activity_playlist_pick);
 
         playListSingleton = PlaylistsSingleton.getInstance();
-
         ArrayList<Playlist> playlists = playListSingleton.getList();
         PlaylistAdapter adapter = new PlaylistAdapter(this, playlists);
 
@@ -53,10 +43,12 @@ public class PlaylistPick extends Activity {
         Playlist test = new Playlist(drawable, "Jam Sesh", "900");
         playListSingleton.newPlaylist(test);
 
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(PlaylistPick.this, insidePlaylist.class);
+                Intent i = new Intent(PlaylistPick.this, InsidePlaylist.class);
                 i.putExtra("songIndex", position);
                 startActivity(i);
             }
@@ -66,11 +58,40 @@ public class PlaylistPick extends Activity {
         DJ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 Intent i = new Intent(PlaylistPick.this, DJActivity.class);
                 startActivity(i);
+                */
+                AuthenticationRequest.Builder builder =
+                        new AuthenticationRequest.Builder(Utils.client_id, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
+
+                builder.setScopes(new String[]{"streaming", "playlist-read-private", "playlist-read-collaborative"});
+                AuthenticationRequest request = builder.build();
+
+                AuthenticationClient.openLoginActivity(PlaylistPick.this, SPOTIFY_REQUEST_CODE, request);
             }
         });
 
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == SPOTIFY_REQUEST_CODE) {
+            AuthenticationResponse response = AuthenticationClient.getResponse(resultCode, data);
+            switch(response.getType().toString())
+            {
+                case "token":
+                    String token = response.getAccessToken();
+                    Utils.setAuthToken(token);
+                    Intent i = new Intent(PlaylistPick.this, DJActivity.class);
+                    startActivity(i);
+                    break;
+                default:
+                    Log.e("ERROR", "Error logging in to spotify");
+                    Toast.makeText(this, "You need Spotify Premium to use DJ mode", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
