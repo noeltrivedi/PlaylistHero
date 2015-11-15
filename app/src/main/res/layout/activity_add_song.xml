@@ -9,6 +9,9 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/searchBar"/>
+        android:id="@+id/searchBar"
+        android:imeActionLabel="@string/search"
+        android:imeOptions="actionSend"
+        android:hint="Search for a song"/>
 
 </RelativeLayout>

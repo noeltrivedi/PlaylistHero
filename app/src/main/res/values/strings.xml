@@ -9,4 +9,5 @@
     <string name="title_activity_inside_playlist">insidePlaylist</string>
     <string name="title_activity_add_song">AddSong</string>
     <string name="title_activity_dj">DJActivity</string>
+    <string name="search">Search</string>
 </resources>

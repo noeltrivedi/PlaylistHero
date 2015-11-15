@@ -41,7 +41,7 @@ public class PlaylistPick extends Activity {
         SpotifyApi api = new SpotifyApi();
 
         SpotifyService spotify = api.getService();
-
+/*
         String searchString = "wagon+wheel";
         spotify.searchTracks(searchString, new SpotifyCallback<TracksPager>(){
             @Override
@@ -60,30 +60,7 @@ public class PlaylistPick extends Activity {
                 Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
             }
         });
-        /*
-        Pager<Track> pager = tp.tracks;
-
-        for(Track t : pager.items)
-        {
-            String toast = "Title Found: " + t.name;
-            Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
-        }
-        */
-        /*
-        spotify.getAlbum("2dIGnmEIy1WZIcZCFSj6i8", new Callback<Album>() {
-            @Override
-            public void success(Album album, Response response) {
-                String toast = "Album Success: " + album.name;
-                Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                String toast = "Error: " + error.toString();
-                Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
-            }
-        });
-        */
+  */
         playListSingleton = PlaylistsSingleton.getInstance();
 
         ArrayList<Playlist> playlists = playListSingleton.getList();

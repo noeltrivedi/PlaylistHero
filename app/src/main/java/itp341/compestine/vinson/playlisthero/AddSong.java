@@ -2,9 +2,22 @@ package itp341.compestine.vinson.playlisthero;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyCallback;
+import kaaes.spotify.webapi.android.SpotifyError;
+import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Track;
+import kaaes.spotify.webapi.android.models.TracksPager;
+import retrofit.client.Response;
 
 public class AddSong extends Activity {
 
@@ -15,8 +28,46 @@ public class AddSong extends Activity {
 
         String suggestion;
         EditText searchBar = (EditText)findViewById(R.id.searchBar);
-        suggestion = searchBar.getText().toString(); 
+        searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
+            {
+                boolean handled = false;
+                if(actionId == EditorInfo.IME_ACTION_SEND || event.getKeyCode() == KeyEvent.KEYCODE_ENTER)
+                {
+                    handled = true;
+                    String search = v.getText().toString();
+                    search.replace(' ', '+');
+                    searchSong(search);
+                }
+                return handled;
+            }
+        });
 
+    }
+
+    private void searchSong(String search)
+    {
+        SpotifyApi api = new SpotifyApi();
+
+        SpotifyService spotify = api.getService();
+        spotify.searchTracks(search, new SpotifyCallback<TracksPager>(){
+            @Override
+            public void success(TracksPager tracksPager, Response response)
+            {
+                //String toast = response.toString();
+                for(Track t : tracksPager.tracks.items) {
+                    String toast = "Track found: " + t.name + " by " + Utils.formatArtists(t.artists);
+                    Log.i("Text:", toast);
+                }
+            }
+
+            @Override
+            public void failure(SpotifyError spotifyError) {
+                String toast = "Track not found";
+                Log.e("Search", toast);
+            }
+        });
     }
 
     @Override
