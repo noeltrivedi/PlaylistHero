@@ -3,6 +3,7 @@ package itp341.compestine.vinson.playlisthero;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 
+import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.spotify.sdk.android.player.Config;
 import com.spotify.sdk.android.player.ConnectionStateCallback;
 import com.spotify.sdk.android.player.Player;
@@ -20,6 +23,11 @@ import com.spotify.sdk.android.player.PlayerState;
 import com.spotify.sdk.android.player.Spotify;
 
 import java.util.ArrayList;
+
+import kaaes.spotify.webapi.android.models.UserPrivate;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class DJActivity extends Activity implements
         PlayerNotificationCallback, ConnectionStateCallback {
@@ -38,7 +46,6 @@ public class DJActivity extends Activity implements
         setContentView(R.layout.activity_dj);
 
         initializePlayer();
-
         //Current playlist
         accepted = SongSingleton.getInstance();
         acceptedSongs = accepted.getSongs();
