@@ -43,12 +43,12 @@ public class DJActivity extends Activity {
         pending.setAdapter(pendingAdapter);
 
         for(int i = 0; i < 10; i ++){
-            Song test = new Song("40 Miles", "Yonder Mountain", getResources().getDrawable(R.drawable.yonder), 100);
+            Song test = new Song("40 Miles", "Yonder Mountain", getResources().getDrawable(R.drawable.yonder), 100, "34");
             acceptedSongs.add(test);
         }
 
         for(int a = 0; a < 5; a ++){
-            Song test2= new Song ("My Jelly", "Stranger Danger", getResources().getDrawable(R.drawable.we_be_jammin_400x400), 50);
+            Song test2= new Song ("My Jelly", "Stranger Danger", getResources().getDrawable(R.drawable.we_be_jammin_400x400), 50, "60");
             suggestedSongs.add(test2);
         }
 

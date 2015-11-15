@@ -10,4 +10,5 @@
     <string name="title_activity_add_song">AddSong</string>
     <string name="title_activity_dj">DJActivity</string>
     <string name="search">Search</string>
+    <string name="title_activity_parse_test">ParseTest</string>
 </resources>

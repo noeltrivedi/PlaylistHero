@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="itp341.compestine.vinson.playlisthero" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -32,6 +35,10 @@
             android:name=".DJActivity"
             android:label="@string/title_activity_dj" >
         </activity>
+        <activity
+            android:name=".ParseTest"
+            android:label="@string/title_activity_parse_test" >
+        </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>
