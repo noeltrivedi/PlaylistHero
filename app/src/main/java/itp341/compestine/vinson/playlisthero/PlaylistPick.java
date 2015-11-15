@@ -1,17 +1,32 @@
 package itp341.compestine.vinson.playlisthero;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcel;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+
+import kaaes.spotify.webapi.android.SpotifyApi;
+import kaaes.spotify.webapi.android.SpotifyCallback;
+import kaaes.spotify.webapi.android.SpotifyError;
+import kaaes.spotify.webapi.android.SpotifyService;
+import kaaes.spotify.webapi.android.models.Album;
+import kaaes.spotify.webapi.android.models.Pager;
+import kaaes.spotify.webapi.android.models.Track;
+import kaaes.spotify.webapi.android.models.TracksPager;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class PlaylistPick extends Activity {
 
@@ -23,6 +38,52 @@ public class PlaylistPick extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist_pick);
 
+        SpotifyApi api = new SpotifyApi();
+
+        SpotifyService spotify = api.getService();
+
+        String searchString = "wagon+wheel";
+        spotify.searchTracks(searchString, new SpotifyCallback<TracksPager>(){
+            @Override
+            public void success(TracksPager tracksPager, Response response)
+            {
+                //String toast = response.toString();
+                for(Track t : tracksPager.tracks.items) {
+                    String toast = "Track found: " + t.name + " by " + t.artists.toString();
+                    Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void failure(SpotifyError spotifyError) {
+                String toast = "Track not found";
+                Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
+            }
+        });
+        /*
+        Pager<Track> pager = tp.tracks;
+
+        for(Track t : pager.items)
+        {
+            String toast = "Title Found: " + t.name;
+            Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
+        }
+        */
+        /*
+        spotify.getAlbum("2dIGnmEIy1WZIcZCFSj6i8", new Callback<Album>() {
+            @Override
+            public void success(Album album, Response response) {
+                String toast = "Album Success: " + album.name;
+                Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                String toast = "Error: " + error.toString();
+                Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
+            }
+        });
+        */
         playListSingleton = PlaylistsSingleton.getInstance();
 
         ArrayList<Playlist> playlists = playListSingleton.getList();
