@@ -1,6 +1,7 @@
 package itp341.compestine.vinson.playlisthero;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +18,8 @@ import java.util.ArrayList;
  */
 public class SongAdapter extends ArrayAdapter<Song> {
     Song song;
-    int upclick =0;
-    int downclick = 0;
+    boolean upclick = false;
+    boolean downclick = false;
 
     public SongAdapter(Context context, ArrayList<Song> songs ){super (context, 0, songs);}
     public View getView(int position, View convertView, ViewGroup parent){
@@ -43,15 +44,20 @@ public class SongAdapter extends ArrayAdapter<Song> {
             @Override
             public void onClick(View v) {
                 //Checks if user has already downvoted
-                if(downclick != 0 && upclick == 0){
+                if(downclick)
+                {
+                    downclick = false;
                     song.upVote();
-                    upclick =0;
-                    downclick = 0;
                 }
-
-               else if(upclick  == 0){
+                if(!upclick)
+                {
+                    upclick = true;
                     song.upVote();
-                    upclick+=1;
+                }
+                else
+                {
+                    upclick = false;
+                    song.downVote();
                 }
                 tvVotes.setText(song.getVotes());
             }
@@ -61,16 +67,20 @@ public class SongAdapter extends ArrayAdapter<Song> {
         downVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(upclick != 0 && downclick == 0){
+                if(upclick)
+                {
+                    upclick = false;
                     song.downVote();
-                    downclick =0;
-                    upclick = 0;
                 }
-
-                else if (downclick == 0){
+                if(!downclick)
+                {
+                    downclick = true;
                     song.downVote();
-                    downclick +=1;
+                }
+                else
+                {
+                    downclick = false;
+                    song.upVote();
                 }
                 tvVotes.setText(song.getVotes());
             }

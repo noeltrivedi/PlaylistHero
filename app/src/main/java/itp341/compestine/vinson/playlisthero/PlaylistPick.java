@@ -38,29 +38,6 @@ public class PlaylistPick extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_playlist_pick);
 
-        SpotifyApi api = new SpotifyApi();
-
-        SpotifyService spotify = api.getService();
-/*
-        String searchString = "wagon+wheel";
-        spotify.searchTracks(searchString, new SpotifyCallback<TracksPager>(){
-            @Override
-            public void success(TracksPager tracksPager, Response response)
-            {
-                //String toast = response.toString();
-                for(Track t : tracksPager.tracks.items) {
-                    String toast = "Track found: " + t.name + " by " + t.artists.toString();
-                    Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void failure(SpotifyError spotifyError) {
-                String toast = "Track not found";
-                Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG).show();
-            }
-        });
-  */
         playListSingleton = PlaylistsSingleton.getInstance();
 
         ArrayList<Playlist> playlists = playListSingleton.getList();

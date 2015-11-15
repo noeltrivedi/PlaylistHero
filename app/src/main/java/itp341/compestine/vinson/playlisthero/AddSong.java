@@ -54,16 +54,15 @@ public class AddSong extends Activity {
             @Override
             public void success(TracksPager tracksPager, Response response)
             {
-                //String toast = response.toString();
-                for(Track t : tracksPager.tracks.items) {
+               for(Track t : tracksPager.tracks.items) {
                     String toast = "Track found: " + t.name + " by " + Utils.formatArtists(t.artists);
-                    Log.i("Text:", toast);
+                    Log.i("Text", toast);
                 }
             }
             @Override
             public void failure(SpotifyError spotifyError) {
-                String toast = "Track not found";
-                Log.e("Search", toast);
+                String toast = "Error searching for track";
+                Toast.makeText(getApplicationContext(), toast, Toast.LENGTH_LONG);
             }
         });
     }
