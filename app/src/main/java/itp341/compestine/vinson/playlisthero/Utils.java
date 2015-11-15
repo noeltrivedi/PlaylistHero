@@ -76,7 +76,7 @@ public class Utils {
             return null;
         }
         if(t.album.images.size() == 0)
-            return new Song(t.name, Utils.formatArtists(t.artists), null, 0);
+            return new Song(t.name, Utils.formatArtists(t.artists), null, 1, null);
         String albumURL = t.album.images.get(0).url;
 
         for(Image i : t.album.images)
@@ -96,6 +96,6 @@ public class Utils {
             e.printStackTrace();
         }
 
-        return new Song(t.name, Utils.formatArtists(t.artists), albumArt, 0);
+        return new Song(t.name, Utils.formatArtists(t.artists), albumArt, 1, null);
     }
 }

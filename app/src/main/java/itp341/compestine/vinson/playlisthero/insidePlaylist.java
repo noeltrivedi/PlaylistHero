@@ -32,6 +32,7 @@ public class InsidePlaylist extends Activity {
 
         //Add Button
         addButton = (ImageButton)findViewById(R.id.addButton);
+        addButton.bringToFront();
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

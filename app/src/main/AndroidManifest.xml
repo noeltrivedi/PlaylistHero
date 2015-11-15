@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="itp341.compestine.vinson.playlisthero" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -33,9 +36,14 @@
             android:label="@string/title_activity_dj" >
         </activity>
         <activity
+<<<<<<< HEAD
             android:name="com.spotify.sdk.android.authentication.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
+=======
+            android:name=".ParseTest"
+            android:label="@string/title_activity_parse_test" >
+>>>>>>> fa97981ac91820e2852b780173bc025e1c6bc0ad
         </activity>
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
+
 </manifest>

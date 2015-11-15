@@ -11,12 +11,14 @@ public class Song {
     Drawable songArt;
     int votes;
     String artist;
+    String songID;
 
-    public Song (String name, String artist, Drawable songArt, int votes){
+    public Song (String name, String artist, Drawable songArt, int votes, String songID){
         this.name = name;
         this.songArt = songArt;
         this.votes = votes;
         this.artist = artist;
+        this.songID = songID;
     }
 
     public String getName(){
@@ -36,6 +38,9 @@ public class Song {
         String score = String.valueOf(votes);
         return score;
     }
+    public String getSongID(){
+        return songID;
+    }
 
     public void setName(String name){
         this.name = name;
@@ -51,6 +56,10 @@ public class Song {
 
     public void setVotes(int votes){
         this.votes = votes;
+    }
+
+    public void setSongID(String songID){
+        this.songID = songID;
     }
 
     public void upVote(){
