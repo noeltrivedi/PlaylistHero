@@ -4,8 +4,8 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:id="@+id/songImage"
         android:src="@drawable/yonder"
         android:maxHeight="32dp"
@@ -16,7 +16,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="251dp"
+        android:layout_width="230dp"
         android:layout_height="match_parent">
 
         <TextView
@@ -36,15 +36,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:orientation="vertical">
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:src="@drawable/up_off"
             android:scaleType="fitCenter"
-            android:background="#FF6600"
+            android:background="#FFa200"
             android:layout_gravity="center"
             android:id="@+id/upVote"
             android:clickable="true"
@@ -63,10 +63,10 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="35dp"
             android:src="@drawable/down_off"
             android:scaleType="fitCenter"
-            android:background="#FF6600"
+            android:background="#FFa200"
             android:layout_gravity="center"
             android:id="@+id/downVote"
             android:clickable="true"
