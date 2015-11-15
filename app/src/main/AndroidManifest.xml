@@ -28,6 +28,10 @@
             android:name=".AddSong"
             android:label="@string/title_activity_add_song" >
         </activity>
+        <activity
+            android:name=".DJActivity"
+            android:label="@string/title_activity_dj" >
+        </activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

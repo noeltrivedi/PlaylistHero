@@ -8,4 +8,5 @@
     <string name = "CurrentPlaying">Current Playlists</string>
     <string name="title_activity_inside_playlist">insidePlaylist</string>
     <string name="title_activity_add_song">AddSong</string>
+    <string name="title_activity_dj">DJActivity</string>
 </resources>
