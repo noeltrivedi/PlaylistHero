@@ -35,7 +35,6 @@ public class MainActivity extends Activity {
         StrictMode.setThreadPolicy(policy);
 
         setContentView(R.layout.activity_main);
-
         Thread timerThread = new Thread(){
             public void run(){
                 try{
@@ -43,7 +42,8 @@ public class MainActivity extends Activity {
                 }catch(InterruptedException e){
                     e.printStackTrace();
                 }finally{
-                    Intent intent = new Intent(MainActivity.this,ParseTest.class);
+                    //Intent intent = new Intent(MainActivity.this,ParseTest.class);
+                    Intent intent = new Intent(MainActivity.this, PlaylistPick.class);
                     startActivity(intent);
                     finish();
                 }
