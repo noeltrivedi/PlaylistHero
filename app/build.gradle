@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 21
     buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "itp341.compestine.vinson.playlisthero"
-        minSdkVersion 22
-        targetSdkVersion 23
+        minSdkVersion 21
+        targetSdkVersion 21
         versionCode 1
         versionName "1.0"
     }
@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     //add the spotify dependencies
     compile 'com.spotify.sdk:spotify-auth:1.0.0-beta11@aar'
     compile 'com.spotify.sdk:spotify-player:1.0.0-beta11@aar'
