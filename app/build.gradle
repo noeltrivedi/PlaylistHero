@@ -30,4 +30,10 @@ dependencies {
     //add the spotify dependencies
     compile 'com.spotify.sdk:spotify-auth:1.0.0-beta11@aar'
     compile 'com.spotify.sdk:spotify-player:1.0.0-beta11@aar'
+
+    //dependencies for spotify web api wrapper
+    compile(name:'spotify-web-api-android-0.1.1', ext:'aar')
+    compile 'com.squareup.retrofit:retrofit:1.9.0'
+    compile 'com.squareup.okhttp:okhttp:2.2.0'
+
 }
