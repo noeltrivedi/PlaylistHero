@@ -8,6 +8,12 @@ import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.SaveCallback;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -76,7 +82,7 @@ public class Utils {
             return null;
         }
         if(t.album.images.size() == 0)
-            return new Song(t.name, Utils.formatArtists(t.artists), null, 1, null);
+            return new Song(t.name, Utils.formatArtists(t.artists), null, 1, t.id);
         String albumURL = t.album.images.get(0).url;
 
         for(Image i : t.album.images)
@@ -96,6 +102,45 @@ public class Utils {
             e.printStackTrace();
         }
 
-        return new Song(t.name, Utils.formatArtists(t.artists), albumArt, 1, null);
+        return new Song(t.name, Utils.formatArtists(t.artists), albumArt, 1, t.id);
     }
+
+    public static void pushToParse(Song song)
+    {
+        ParseObject songToUpload = new ParseObject(InsidePlaylist.djID);
+        songToUpload.put("songID", song.getSongID());
+        songToUpload.put("Votes", song.getVotesInt());
+        songToUpload.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    Log.i("Parse", "Success");
+                } else {
+                    Log.i("Parse", "Failure");
+                }
+            }
+        });
+    }
+
+    public static void updateVotesParse(final Song song)
+    {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(InsidePlaylist.djID);
+        query.whereEqualTo("songID", song.getSongID());
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e) {
+                if(e == null && objects.size() > 0)
+                {
+                    ParseObject po = objects.get(0);
+                    po.put("Votes", song.getVotesInt());
+                    try {
+                        po.save();
+                    } catch (ParseException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
 }

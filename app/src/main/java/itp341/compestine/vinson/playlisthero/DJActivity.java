@@ -23,14 +23,14 @@ import java.util.ArrayList;
 
 public class DJActivity extends Activity implements
         PlayerNotificationCallback, ConnectionStateCallback {
-    SuggestedSongSingleton suggestions;
+    SongSingleton suggestions;
     ArrayList<Song> suggestedSongs;
     SongSingleton accepted;
     ArrayList<Song> acceptedSongs;
     ListView queue;
     ListView pending;
 
-    private Player player= null;
+    static private Player player= null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +48,8 @@ public class DJActivity extends Activity implements
 
 
         //For Pending Queue
-        suggestions = SuggestedSongSingleton.getInstance();
-        suggestedSongs= suggestions.getSuggestions();
+        suggestions = SongSingleton.getInstance();
+        suggestedSongs= suggestions.getSongs();
         final SongAdapter pendingAdapter = new SongAdapter(this, suggestedSongs);
         pending = (ListView)findViewById(R.id.suggestedSongs);
         pending.setAdapter(pendingAdapter);
@@ -57,11 +57,6 @@ public class DJActivity extends Activity implements
         for(int i = 0; i < 10; i ++){
             Song test = new Song("40 Miles", "Yonder Mountain", getResources().getDrawable(R.drawable.yonder), 100, "34");
             acceptedSongs.add(test);
-        }
-
-        for(int a = 0; a < 5; a ++){
-            Song test2= new Song ("My Jelly", "Stranger Danger", getResources().getDrawable(R.drawable.we_be_jammin_400x400), 50, "60");
-            suggestedSongs.add(test2);
         }
 
         pending.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -76,6 +71,10 @@ public class DJActivity extends Activity implements
         });
     }
 
+    public static void playSong(String trackID)
+    {
+        player.play("spotify:track:" + trackID);
+    }
 
     private void initializePlayer()
     {
@@ -86,7 +85,7 @@ public class DJActivity extends Activity implements
             public void onInitialized(Player player) {
                 player.addConnectionStateCallback(DJActivity.this);
                 player.addPlayerNotificationCallback(DJActivity.this);
-                player.play("spotify:track:2TpxZ7JUBn3uw46aR7qd6V");
+                player.play("spotify:track:1JO1xLtVc8mWhIoE3YaCL0");
             }
 
             @Override

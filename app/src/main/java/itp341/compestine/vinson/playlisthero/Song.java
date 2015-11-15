@@ -38,6 +38,11 @@ public class Song {
         String score = String.valueOf(votes);
         return score;
     }
+    public int getVotesInt()
+    {
+        return votes;
+    }
+
     public String getSongID(){
         return songID;
     }

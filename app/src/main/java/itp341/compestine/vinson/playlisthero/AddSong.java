@@ -14,6 +14,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
+
 import java.util.ArrayList;
 
 import kaaes.spotify.webapi.android.SpotifyCallback;
@@ -72,7 +76,10 @@ public class AddSong extends Activity {
             Log.e("ERROR", "Error searching for track " + songName + " in the singleton array");
             return;
         }
+        Log.i("SongInfo", song.getSongID() + " " + song.getVotes());
+        Utils.pushToParse(song);
         Toast.makeText(this, "Added " + song.getName() + " to the suggestions list", Toast.LENGTH_LONG).show();
+
         SongSingleton.getInstance().newSong(song);
 
         setResult(InsidePlaylist.RESULT_OK);
@@ -91,6 +98,7 @@ public class AddSong extends Activity {
                 SearchSingleton searchSingleton = SearchSingleton.getInstance();
                 searchSingleton.clear();
                 for(Track t : tracksPager.tracks.items) {
+                    Log.i("TrackInfo", t.name + ": " + t.id);
                     searchSingleton.addSong(Utils.convertTrackToSong(t));
                 }
             }

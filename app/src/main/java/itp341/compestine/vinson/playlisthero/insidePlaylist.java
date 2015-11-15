@@ -3,16 +3,26 @@ package itp341.compestine.vinson.playlisthero;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class InsidePlaylist extends Activity {
     public static int ADD_SONG_CODE = 1234, RESULT_OK = 12;
+    public static String djID = "Song";
     SongSingleton songsSingleton;
     ArrayList<Song> songs;
     Song holder;
@@ -25,6 +35,7 @@ public class InsidePlaylist extends Activity {
         songsSingleton = SongSingleton.getInstance();
         Intent i = getIntent();
         songs = songsSingleton.getSongs();
+        loadSuggestions(songs);
         SongAdapter adapter = new SongAdapter(this, songs);
 
         ListView listView = (ListView)findViewById(R.id.songList);
@@ -54,6 +65,44 @@ public class InsidePlaylist extends Activity {
                 ListView listView = (ListView)findViewById(R.id.songList);
                 ((SongAdapter)listView.getAdapter()).notifyDataSetChanged();
             }
+        }
+    }
+
+    private void loadSuggestions(ArrayList<Song> songs)
+    {
+        if(songs.isEmpty()) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery(djID);
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if (e == null) {
+                        //success
+                        ArrayList<Song> songs = SongSingleton.getInstance().getSongs();
+                        for (ParseObject po : objects) {
+                            String songID = po.getString("songID");
+                            int votes = po.getInt("Votes");
+
+                            Log.i("ParseTracks", songID + " with " + votes + " votes");
+                            Song newSong = Utils.convertTrackToSong(Utils.spotify.getTrack(songID));
+                            newSong.setVotes(votes);
+
+                            songs.add(newSong);
+
+
+                        }
+
+                        Collections.sort(songs, new Comparator<Song>() {
+                            @Override
+                            public int compare(Song lhs, Song rhs) {
+                                return -1 * Integer.compare(lhs.getVotesInt(), rhs.getVotesInt());
+                            }
+                        });
+
+                        ListView listView = (ListView) findViewById(R.id.songList);
+                        ((SongAdapter) listView.getAdapter()).notifyDataSetChanged();
+                    }
+                }
+            });
         }
     }
 

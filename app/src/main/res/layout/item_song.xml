@@ -17,7 +17,8 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="230dp"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/nameLayout">
 
         <TextView
             android:layout_width="wrap_content"

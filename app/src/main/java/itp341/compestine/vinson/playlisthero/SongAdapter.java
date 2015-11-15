@@ -10,10 +10,15 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Created by vcomp_000 on 11/14/2015.
@@ -49,26 +54,28 @@ public class SongAdapter extends ArrayAdapter<Song> {
         upVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TableRow tr = (TableRow)v.getParent().getParent();
+                ListView lv = (ListView)tr.getParent();
+                int position = lv.getPositionForView(tr);
+                song = getItem(position);
                 //Checks if user has already downvoted
-                if(downclick)
-                {
+                Log.i("SongVote", song.getName() + " has " + song.getVotes() + " (" + upclick + "/" + downclick + ")");
+                if (downclick) {
                     downclick = false;
                     song.upVote();
                 }
-                if(!upclick)
-                {
+                if (!upclick) {
                     upclick = true;
                     song.upVote();
-                }
-                else
-
+                } else
                 {
                     upclick = false;
                     song.downVote();
                 }
-
-
                 tvVotes.setText(song.getVotes());
+                Log.i("SongVote", song.getName() + " has " + song.getVotes() + " (" + upclick + "/" + downclick + ")");
+                sort();
+                Utils.updateVotesParse(song);
             }
         });
 
@@ -76,6 +83,11 @@ public class SongAdapter extends ArrayAdapter<Song> {
         downVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                TableRow tr = (TableRow)v.getParent().getParent();
+                ListView lv = (ListView)tr.getParent();
+                int position = lv.getPositionForView(tr);
+                song = getItem(position);
+
                 if(upclick)
                 {
                     upclick = false;
@@ -91,15 +103,23 @@ public class SongAdapter extends ArrayAdapter<Song> {
                     downclick = false;
                     song.upVote();
                 }
-
-
                 tvVotes.setText(song.getVotes());
+                sort();
+                Utils.updateVotesParse(song);
             }
         });
 
         return convertView;
     }
 
-
+    private void sort()
+    {
+        Collections.sort(SongSingleton.getInstance().getSongs(), new Comparator<Song>() {
+            @Override
+            public int compare(Song lhs, Song rhs) {
+                return -1 * Integer.compare(lhs.getVotesInt(), rhs.getVotesInt());
+            }
+        });
+    }
 
 }
