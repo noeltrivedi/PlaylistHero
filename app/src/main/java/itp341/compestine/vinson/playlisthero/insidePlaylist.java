@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
 
@@ -18,7 +19,7 @@ public class insidePlaylist extends Activity {
     SongSingleton songsSingleton;
     ArrayList<Song> songs;
     Song holder;
-
+    Button addButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,8 +38,16 @@ public class insidePlaylist extends Activity {
         Song testSong = new Song("Bolton Stretch", "Yonder Mountain String Band",yonder, 50);
         songsSingleton.newSong(testSong);
 
-       
 
+        //Add Button
+        addButton = (Button)findViewById(R.id.addButton);
+        addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(insidePlaylist.this, AddSong.class);
+                startActivity(i);
+            }
+        });
 
     }
 

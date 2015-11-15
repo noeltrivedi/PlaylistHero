@@ -24,6 +24,10 @@
             android:name=".insidePlaylist"
             android:label="@string/title_activity_inside_playlist" >
         </activity>
+        <activity
+            android:name=".AddSong"
+            android:label="@string/title_activity_add_song" >
+        </activity>
     </application>
 
 </manifest>
