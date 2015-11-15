@@ -74,6 +74,9 @@ public class DJActivity extends Activity implements
                 pendingAdapter.notifyDataSetChanged();
                 acceptedSongs.add(toAdd);
                 acceptedAdapter.notifyDataSetChanged();
+
+                player.queue("spotify:track: " + toAdd.getSongID());
+
             }
         });
     }
