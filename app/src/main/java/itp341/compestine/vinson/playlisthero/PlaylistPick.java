@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class PlaylistPick extends Activity {
 
 
     PlaylistsSingleton playListSingleton;
+    ImageButton DJ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,15 @@ public class PlaylistPick extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(PlaylistPick.this, insidePlaylist.class);
                 i.putExtra("songIndex", position);
+                startActivity(i);
+            }
+        });
+
+        DJ = (ImageButton)findViewById(R.id.DJButton);
+        DJ.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(PlaylistPick.this, DJActivity.class);
                 startActivity(i);
             }
         });

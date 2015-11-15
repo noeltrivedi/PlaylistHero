@@ -19,7 +19,7 @@ public class insidePlaylist extends Activity {
     SongSingleton songsSingleton;
     ArrayList<Song> songs;
     Song holder;
-    Button addButton;
+   ImageButton addButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,7 +34,7 @@ public class insidePlaylist extends Activity {
         listView.setAdapter(adapter);
 
         //Add Button
-        addButton = (Button)findViewById(R.id.addButton);
+        addButton = (ImageButton)findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

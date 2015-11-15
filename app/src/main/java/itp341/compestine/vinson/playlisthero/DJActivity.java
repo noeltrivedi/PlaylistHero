@@ -30,7 +30,7 @@ public class DJActivity extends Activity {
         //Current playlist
         accepted = SongSingleton.getInstance();
         acceptedSongs = accepted.getSongs();
-        SongAdapter acceptedAdapter = new SongAdapter(this, acceptedSongs);
+        final SongAdapter acceptedAdapter = new SongAdapter(this, acceptedSongs);
         queue = (ListView)findViewById(R.id.currentSongs);
         queue.setAdapter(acceptedAdapter);
 
@@ -55,8 +55,11 @@ public class DJActivity extends Activity {
         pending.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Song toAdd = suggestedSongs.get(position);
                 suggestedSongs.remove(position);
                 pendingAdapter.notifyDataSetChanged();
+                acceptedSongs.add(toAdd);
+                acceptedAdapter.notifyDataSetChanged();
             }
         });
 

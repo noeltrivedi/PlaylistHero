@@ -25,6 +25,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+<<<<<<< HEAD
+=======
         ActionBar actionBar = getActionBar();
         actionBar.hide();
 
@@ -32,26 +34,22 @@ public class MainActivity extends Activity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
+>>>>>>> origin/master
         setContentView(R.layout.activity_main);
 
-        test = (Button)findViewById(R.id.testButton);
-
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, PlaylistPick.class);
-                startActivity(i);
+        Thread timerThread = new Thread(){
+            public void run(){
+                try{
+                    sleep(2000);
+                }catch(InterruptedException e){
+                    e.printStackTrace();
+                }finally{
+                    Intent intent = new Intent(MainActivity.this,PlaylistPick.class);
+                    startActivity(intent);
+                }
             }
-        });
-
-        Button dj = (Button)findViewById(R.id.dj);
-        dj.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, DJActivity.class);
-                startActivity(i);
-            }
-        });
+        };
+        timerThread.start();
 
     }
 
