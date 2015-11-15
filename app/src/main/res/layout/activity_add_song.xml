@@ -14,4 +14,9 @@
         android:imeOptions="actionSend"
         android:hint="Search for a song"/>
 
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchedTracks"
+        android:layout_below="@+id/searchBar" />
 </RelativeLayout>

@@ -35,7 +35,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
         final TextView tvVotes = (TextView)convertView.findViewById(R.id.votes);
 
         tvName.setText(song.getName());
-        tvArtist.setTag(song.getArtist());
+        tvArtist.setText(song.getArtist());
         tvAlbum.setImageDrawable(song.getSongArt());
         tvVotes.setText(song.getVotes());
 
