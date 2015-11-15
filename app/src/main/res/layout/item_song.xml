@@ -25,14 +25,16 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Song Title"
-            android:id="@+id/songName" />
+            android:id="@+id/songName"
+            android:textColor="#deef6b"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Artist"
-            android:id="@+id/artistName" />
+            android:id="@+id/artistName"
+            android:textColor="#deef6b"/>
     </LinearLayout>
 
     <LinearLayout
@@ -60,6 +62,7 @@
             android:id="@+id/votes"
             android:layout_gravity="center"
             android:foregroundGravity="right"
+            android:textColor="#deef6b"
             android:textAppearance="?android:attr/textAppearanceMedium" />
 
         <ImageView
