@@ -13,8 +13,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 import com.spotify.sdk.android.player.Config;
 import com.spotify.sdk.android.player.ConnectionStateCallback;
@@ -24,6 +26,9 @@ import com.spotify.sdk.android.player.PlayerState;
 import com.spotify.sdk.android.player.Spotify;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import kaaes.spotify.webapi.android.models.UserPrivate;
 import retrofit.Callback;
@@ -45,25 +50,8 @@ public class DJActivity extends Activity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dj);
-
+        loadMySongs();
         initializePlayer();
-        ParseObject me = new ParseObject("DJs");
-        me.put("userID", "128019249");
-        me.put("suggestions", Utils.convertSongArray(SongSingleton.getInstance().getSongs()));
-        me.saveInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                if(e == null)
-                {
-                    Log.i("JSON", "Saved JSON Array");
-                }
-                else
-                {
-                    Log.i("JSON", "Error2");
-
-                }
-            }
-        });
 
         //Current playlist
         accepted = SongSingleton.getInstance();
@@ -94,6 +82,46 @@ public class DJActivity extends Activity implements
 
             }
         });
+    }
+
+    private void loadMySongs()
+    {
+        ArrayList<Song> songs = SongSingleton.getInstance().getSongs();
+        if(songs.isEmpty()) {
+            Log.i("LOAD", "Songs is empty");
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("DJs");
+            query.findInBackground(new FindCallback<ParseObject>() {
+                @Override
+                public void done(List<ParseObject> objects, ParseException e) {
+                    if (e == null) {
+                        //success
+                        ArrayList<Song> songs = SongSingleton.getInstance().getSongs();
+                        for (ParseObject po : objects) {
+                            String songID = po.getString("songID");
+                            int votes = po.getInt("Votes");
+
+                            Log.i("ParseTracks", songID + " with " + votes + " votes");
+                            Song newSong = Utils.convertTrackToSong(Utils.spotify.getTrack(songID));
+                            newSong.setVotes(votes);
+
+                            songs.add(newSong);
+
+
+                        }
+
+                        Collections.sort(songs, new Comparator<Song>() {
+                            @Override
+                            public int compare(Song lhs, Song rhs) {
+                                return -1 * Integer.compare(lhs.getVotesInt(), rhs.getVotesInt());
+                            }
+                        });
+
+                        ListView listView = (ListView) findViewById(R.id.songList);
+                        ((SongAdapter) listView.getAdapter()).notifyDataSetChanged();
+                    }
+                }
+            });
+        }
     }
 
     public static void playSong(String trackID)

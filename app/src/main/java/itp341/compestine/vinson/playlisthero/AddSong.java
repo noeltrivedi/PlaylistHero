@@ -77,7 +77,7 @@ public class AddSong extends Activity {
             return;
         }
         Log.i("SongInfo", song.getSongID() + " " + song.getVotes());
-        Utils.pushToParse(song);
+        Utils.pushToParse(song, InsidePlaylist.djID);
         Toast.makeText(this, "Added " + song.getName() + " to the suggestions list", Toast.LENGTH_LONG).show();
 
         SongSingleton.getInstance().newSong(song);

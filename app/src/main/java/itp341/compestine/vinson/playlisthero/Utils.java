@@ -15,6 +15,8 @@ import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -140,32 +142,45 @@ public class Utils {
         return new Song(t.name, Utils.formatArtists(t.artists), albumArt, 1, t.id);
     }
 
-    public static void pushToParse(Song song)
+    public static void pushToParse(final Song song, final String djID)
     {
-        ParseObject songToUpload = new ParseObject(InsidePlaylist.djID);
-        songToUpload.put("songID", song.getSongID());
-        songToUpload.put("Votes", song.getVotesInt());
-        songToUpload.saveInBackground(new SaveCallback() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("DJs");
+        query.whereMatches("userID", djID);
+        query.findInBackground(new FindCallback<ParseObject>() {
             @Override
-            public void done(ParseException e) {
-                if (e == null) {
-                    Log.i("Parse", "Success");
-                } else {
-                    Log.i("Parse", "Failure");
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null)
+                {
+                    ParseObject row = objects.get(0);
+                    JSONArray arr = row.getJSONArray("suggestions");
+                    arr.put(song.getJSONObject());
+
+                    row.put("suggestions", arr);
+                    row.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            if(e == null)
+                            {
+                                Log.i("SAVE", "SUCCESS");
+                            }
+                            else
+                            {
+                                Log.i("SAVE", "FAIL");
+                            }
+                        }
+                    });
                 }
             }
         });
     }
 
-    public static void updateVotesParse(final Song song)
-    {
+    public static void updateVotesParse(final Song song) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery(InsidePlaylist.djID);
         query.whereEqualTo("songID", song.getSongID());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override
             public void done(List<ParseObject> objects, ParseException e) {
-                if(e == null && objects.size() > 0)
-                {
+                if (e == null && objects.size() > 0) {
                     ParseObject po = objects.get(0);
                     po.put("Votes", song.getVotesInt());
                     try {

@@ -15,6 +15,10 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -22,7 +26,7 @@ import java.util.List;
 
 public class InsidePlaylist extends Activity {
     public static int ADD_SONG_CODE = 1234, RESULT_OK = 12;
-    public static String djID = "Song";
+    public static String djID = "128019249";
     SongSingleton songsSingleton;
     ArrayList<Song> songs;
     Song holder;
@@ -71,27 +75,37 @@ public class InsidePlaylist extends Activity {
     private void loadSuggestions(ArrayList<Song> songs)
     {
         if(songs.isEmpty()) {
-            ParseQuery<ParseObject> query = ParseQuery.getQuery(djID);
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("DJs");
+            query.whereMatches("userID", djID);
             query.findInBackground(new FindCallback<ParseObject>() {
                 @Override
                 public void done(List<ParseObject> objects, ParseException e) {
                     if (e == null) {
                         //success
                         ArrayList<Song> songs = SongSingleton.getInstance().getSongs();
-                        for (ParseObject po : objects) {
-                            String songID = po.getString("songID");
-                            int votes = po.getInt("Votes");
+                        JSONArray arr = objects.get(0).getJSONArray("suggestions");
+                        for(int i = 0; i < arr.length(); i++)
+                        {
+                            try
+                            {
+                                JSONObject obj = arr.getJSONObject(i);
+                                String songID = obj.getString("songID");
+                                String votes = obj.getString("votes");
 
-                            Log.i("ParseTracks", songID + " with " + votes + " votes");
-                            Song newSong = Utils.convertTrackToSong(Utils.spotify.getTrack(songID));
-                            newSong.setVotes(votes);
+                                Log.i("ParseTracks", songID + " with " + votes + " votes");
+                                Song newSong = Utils.convertTrackToSong(Utils.spotify.getTrack(songID));
+                                newSong.setVotes(Integer.parseInt(votes));
 
-                            songs.add(newSong);
+                                songs.add(newSong);
 
-
+                            }
+                            catch (JSONException e1)
+                            {
+                                e1.printStackTrace();
+                            }
                         }
 
-                        Collections.sort(songs, new Comparator<Song>() {
+                        Collections.sort(SongSingleton.getInstance().getSongs(), new Comparator<Song>() {
                             @Override
                             public int compare(Song lhs, Song rhs) {
                                 return -1 * Integer.compare(lhs.getVotesInt(), rhs.getVotesInt());
