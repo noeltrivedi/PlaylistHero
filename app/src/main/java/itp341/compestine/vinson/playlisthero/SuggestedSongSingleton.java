@@ -7,14 +7,14 @@ import java.util.ArrayList;
  */
 public class SuggestedSongSingleton {
     private static SuggestedSongSingleton ourInstance = new SuggestedSongSingleton();
-    private static ArrayList<SuggestedSong> suggestions = new ArrayList<>();
+    private static ArrayList<Song> suggestions = new ArrayList<>();
     private SuggestedSongSingleton() {
     }
     public static SuggestedSongSingleton getInstance() {
         return ourInstance;
     }
 
-    public ArrayList<SuggestedSong> getSuggestions(){
+    public ArrayList<Song> getSuggestions(){
         return suggestions;
     }
 
@@ -22,7 +22,7 @@ public class SuggestedSongSingleton {
         return suggestions.size();
     }
 
-    public void newSuggestion(SuggestedSong suggestion){
+    public void newSuggestion(Song suggestion){
         suggestions.add(suggestion);
     }
 

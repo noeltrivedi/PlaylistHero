@@ -7,25 +7,27 @@
     tools:context="itp341.compestine.vinson.playlisthero.DJActivity"
     android:orientation="vertical">
 
-    <ScrollView
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:id="@+id/currentSongs">
-    </ScrollView>
+        android:id="@+id/currentSongs"
+        android:paddingBottom="10dp">
+    </ListView>
 
-    <HorizontalScrollView
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#000"
+        ></View>
+
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-        <GridView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="horizontal"
-            android:id="@+id/suggestedSongs"
-            ></GridView>
-
-    </HorizontalScrollView>
+        android:layout_weight="1"
+        android:id="@+id/suggestedSongs"
+        android:paddingTop="10dp">
+    </ListView>
 
 
 

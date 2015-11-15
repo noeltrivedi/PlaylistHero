@@ -18,6 +18,7 @@ import java.util.List;
 public class MainActivity extends Activity {
 
     Button test;
+    Button dj;
 
 
     @Override
@@ -36,6 +37,16 @@ public class MainActivity extends Activity {
                 startActivity(i);
             }
         });
+
+        Button dj = (Button)findViewById(R.id.dj);
+        dj.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, DJActivity.class);
+                startActivity(i);
+            }
+        });
+
     }
 
     @Override
