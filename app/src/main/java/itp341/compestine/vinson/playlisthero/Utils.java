@@ -48,6 +48,13 @@ public class Utils {
 
     public static Song convertTrackToSong(Track t)
     {
+        if(t == null)
+        {
+            Log.e("TrackNull", "TRACK NULL");
+            return null;
+        }
+        if(t.album.images.size() == 0)
+            return new Song(t.name, Utils.formatArtists(t.artists), null, 0);
         String albumURL = t.album.images.get(0).url;
 
         for(Image i : t.album.images)
@@ -61,7 +68,6 @@ public class Utils {
         //Convert the album art URL into an image
         Drawable albumArt = null;
         try {
-            Log.i("URL", albumURL);
             InputStream is = (InputStream) new URL(albumURL).getContent();
             albumArt = Drawable.createFromStream(is, albumURL);
         } catch (IOException e) {

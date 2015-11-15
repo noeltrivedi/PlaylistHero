@@ -15,7 +15,7 @@ import android.widget.ListView;
 import java.util.ArrayList;
 
 public class insidePlaylist extends Activity {
-
+    public static int ADD_SONG_CODE = 1234, RESULT_OK = 12;
     SongSingleton songsSingleton;
     ArrayList<Song> songs;
     Song holder;
@@ -39,10 +39,23 @@ public class insidePlaylist extends Activity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(insidePlaylist.this, AddSong.class);
-                startActivity(i);
+                insidePlaylist.this.startActivityForResult(i, ADD_SONG_CODE);
             }
         });
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if(requestCode == ADD_SONG_CODE)
+        {
+            if(resultCode == RESULT_OK)
+            {
+                ListView listView = (ListView)findViewById(R.id.songList);
+                ((SongAdapter)listView.getAdapter()).notifyDataSetChanged();
+            }
+        }
     }
 
     @Override
