@@ -18,23 +18,15 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
-    Button test;
-    Button dj;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-<<<<<<< HEAD
-=======
-        ActionBar actionBar = getActionBar();
-        actionBar.hide();
 
         //Allow retrieval of images
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
->>>>>>> origin/master
         setContentView(R.layout.activity_main);
 
         Thread timerThread = new Thread(){
@@ -46,6 +38,7 @@ public class MainActivity extends Activity {
                 }finally{
                     Intent intent = new Intent(MainActivity.this,PlaylistPick.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         };

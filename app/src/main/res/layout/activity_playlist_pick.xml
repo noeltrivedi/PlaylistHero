@@ -13,28 +13,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:background = "#FFA200">
+        android:background = "#FFa200">
 
-        <ImageButton
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/icon"
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
-            android:background="#FFA200"
-            android:id="@+id/DJButton"
-            />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="30sp"
-            android:text="@string/Title"
+            android:text="DJ's Enter Here ->"
             android:gravity="center"
             android:layout_gravity="center"
             android:layout_weight="3"
-            android:textColor="#fdf8f8"
+            android:textColor="#deef6b"
             android:textStyle="bold"/>
+
+        <ImageButton
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/headphone"
+            android:layout_weight="1"
+            android:scaleType="fitCenter"
+            android:background="#FFA200"
+            android:id="@+id/DJButton"
+            />
     </LinearLayout>
     <View
         android:layout_width="match_parent"
@@ -51,9 +52,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
+            android:textSize="25sp"
             android:text="@string/CurrentPlaying"
-            android:textColor="#000"
+            android:textColor="#deef6b"
             android:gravity="center"/>
     </LinearLayout>
 

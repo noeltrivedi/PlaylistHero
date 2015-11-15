@@ -33,12 +33,6 @@ public class insidePlaylist extends Activity {
         ListView listView = (ListView)findViewById(R.id.songList);
         listView.setAdapter(adapter);
 
-        //Test ListView
-        Drawable yonder = getResources().getDrawable(R.drawable.yonder);
-        Song testSong = new Song("Bolton Stretch", "Yonder Mountain String Band",yonder, 50);
-        songsSingleton.newSong(testSong);
-
-
         //Add Button
         addButton = (ImageButton)findViewById(R.id.addButton);
         addButton.setOnClickListener(new View.OnClickListener() {

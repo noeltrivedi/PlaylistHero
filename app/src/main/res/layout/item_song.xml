@@ -42,9 +42,9 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:src="@drawable/upvote"
+            android:src="@drawable/up_off"
             android:scaleType="fitCenter"
-            android:background="#FFF"
+            android:background="#FF6600"
             android:layout_gravity="center"
             android:id="@+id/upVote"
             android:clickable="true"
@@ -64,9 +64,9 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:src="@drawable/downvote"
+            android:src="@drawable/down_off"
             android:scaleType="fitCenter"
-            android:background="#FFF"
+            android:background="#FF6600"
             android:layout_gravity="center"
             android:id="@+id/downVote"
             android:clickable="true"
