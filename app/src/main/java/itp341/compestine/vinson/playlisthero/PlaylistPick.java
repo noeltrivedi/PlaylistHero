@@ -39,7 +39,7 @@ public class PlaylistPick extends Activity {
         listView.setAdapter(adapter);
         //Test ListView
         Drawable drawable = getResources().getDrawable(R.drawable.we_be_jammin_400x400);
-        Playlist test = new Playlist(drawable, "Jam Sesh", "900");
+        Playlist test = new Playlist(drawable, "Jonah's Jam Sesh", "60");
         playListSingleton.newPlaylist(test);
 
 
