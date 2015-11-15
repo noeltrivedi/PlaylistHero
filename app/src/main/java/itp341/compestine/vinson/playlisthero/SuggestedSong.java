@@ -27,7 +27,16 @@ public class SuggestedSong {
         return name;
     }
 
+    public void setScore(int score){
+        this.score = score;
+    }
 
+    public void setAlbumArt(Drawable albumArt){
+        this.albumArt = albumArt;
+    }
+    public void setName(String name){
+        this.name = name;
+    }
 
 
 }

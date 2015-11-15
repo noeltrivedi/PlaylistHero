@@ -15,7 +15,7 @@ public class AddSong extends Activity {
 
         String suggestion;
         EditText searchBar = (EditText)findViewById(R.id.searchBar);
-        suggestion = searchBar.getText().toString(); 
+        suggestion = searchBar.getText().toString();
 
     }
 
