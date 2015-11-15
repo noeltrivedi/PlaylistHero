@@ -15,6 +15,7 @@ import android.widget.ScrollView;
 
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.SaveCallback;
 import com.spotify.sdk.android.player.Config;
 import com.spotify.sdk.android.player.ConnectionStateCallback;
 import com.spotify.sdk.android.player.Player;
@@ -46,6 +47,24 @@ public class DJActivity extends Activity implements
         setContentView(R.layout.activity_dj);
 
         initializePlayer();
+        ParseObject me = new ParseObject("DJs");
+        me.put("userID", "128019249");
+        me.put("suggestions", Utils.convertSongArray(SongSingleton.getInstance().getSongs()));
+        me.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e == null)
+                {
+                    Log.i("JSON", "Saved JSON Array");
+                }
+                else
+                {
+                    Log.i("JSON", "Error2");
+
+                }
+            }
+        });
+
         //Current playlist
         accepted = SongSingleton.getInstance();
         acceptedSongs = accepted.getSongs();
@@ -61,10 +80,6 @@ public class DJActivity extends Activity implements
         pending = (ListView)findViewById(R.id.suggestedSongs);
         pending.setAdapter(pendingAdapter);
 
-        for(int i = 0; i < 10; i ++){
-            Song test = new Song("40 Miles", "Yonder Mountain", getResources().getDrawable(R.drawable.yonder), 100, "34");
-            acceptedSongs.add(test);
-        }
 
         pending.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

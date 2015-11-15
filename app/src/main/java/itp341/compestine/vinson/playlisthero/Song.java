@@ -3,6 +3,9 @@ package itp341.compestine.vinson.playlisthero;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageButton;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by vcomp_000 on 11/14/2015.
  */
@@ -19,6 +22,22 @@ public class Song {
         this.votes = votes;
         this.artist = artist;
         this.songID = songID;
+    }
+
+    public JSONObject getJSONObject()
+    {
+        JSONObject obj = new JSONObject();
+        try
+        {
+            obj.put("name", name);
+            obj.put("songID", songID);
+            obj.put("votes", votes);
+        }
+        catch(JSONException js)
+        {
+            js.printStackTrace();
+        }
+        return obj;
     }
 
     public String getName(){

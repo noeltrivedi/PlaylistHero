@@ -14,10 +14,14 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import org.json.JSONArray;
+
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
@@ -25,6 +29,7 @@ import kaaes.spotify.webapi.android.SpotifyService;
 import kaaes.spotify.webapi.android.models.ArtistSimple;
 import kaaes.spotify.webapi.android.models.Image;
 import kaaes.spotify.webapi.android.models.Track;
+import kaaes.spotify.webapi.android.models.UserPublic;
 
 /**
  * Created by Noel on 11/14/2015.
@@ -72,6 +77,36 @@ public class Utils {
     public static void hideSoftKeyboard(Activity activity) {
         InputMethodManager inputMethodManager = (InputMethodManager)  activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    public static JSONArray convertSongArray(ArrayList<Song> songs)
+    {
+        JSONArray array = new JSONArray();
+        for(Song s : songs)
+        {
+            Log.i("JSON", "Song " + s.getName() + ": " + s.getJSONObject());
+            array =array.put(s.getJSONObject());
+        }
+        Log.i("JSON2", array.toString());
+        return array;
+    }
+
+    public static Playlist convertUserToPlaylist(UserPublic u)
+    {
+        if(u.images.isEmpty())
+        {
+            return new Playlist(null, u.display_name, "100", u.id);
+        }
+        String playlistPicture = u.images.get(0).url;
+        Drawable albumArt = null;
+        try {
+            InputStream is = (InputStream) new URL(playlistPicture).getContent();
+            albumArt = Drawable.createFromStream(is, playlistPicture);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new Playlist(albumArt, u.display_name, ""+900, u.id);
     }
 
     public static Song convertTrackToSong(Track t)
