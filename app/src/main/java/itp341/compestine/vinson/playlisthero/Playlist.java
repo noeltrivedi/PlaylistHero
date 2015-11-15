@@ -21,10 +21,18 @@ public class Playlist {
     Drawable songImage;
     String playlistTitle;
     String numListeners;
-    public Playlist (Drawable songImage, String playlistTitle, String numListeners){
+    String userID;
+
+    public Playlist (Drawable songImage, String playlistTitle, String numListeners, String userID){
         this.songImage = songImage;
         this.playlistTitle = playlistTitle;
         this.numListeners = numListeners;
+        this.userID = userID;
+    }
+
+    public String getUserID()
+    {
+        return userID;
     }
 
     public Drawable getSongImage(){

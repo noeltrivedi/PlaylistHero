@@ -13,11 +13,17 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.spotify.sdk.android.authentication.AuthenticationClient;
 import com.spotify.sdk.android.authentication.AuthenticationRequest;
 import com.spotify.sdk.android.authentication.AuthenticationResponse;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import kaaes.spotify.webapi.android.models.UserPublic;
 
 public class PlaylistPick extends Activity {
     private static final int SPOTIFY_REQUEST_CODE = 1337;
@@ -37,18 +43,25 @@ public class PlaylistPick extends Activity {
 
         ListView listView = (ListView) findViewById(R.id.currentPlaylists);
         listView.setAdapter(adapter);
-        //Test ListView
-        Drawable drawable = getResources().getDrawable(R.drawable.we_be_jammin_400x400);
-        Playlist test = new Playlist(drawable, "Jam Sesh", "900");
-        playListSingleton.newPlaylist(test);
 
-
-
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("DJs");
+        try {
+            List<ParseObject> DJs = query.find();
+            for(ParseObject po : DJs)
+            {
+                UserPublic user = Utils.spotify.getUser(po.getString("userID"));
+                playListSingleton.newPlaylist(Utils.convertUserToPlaylist(user));
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(PlaylistPick.this, InsidePlaylist.class);
-                i.putExtra("songIndex", position);
+                ListView lv = (ListView) parent;
+                Playlist p = (Playlist) lv.getAdapter().getItem(position);
+                i.putExtra("userID", p.getUserID());
                 startActivity(i);
             }
         });
