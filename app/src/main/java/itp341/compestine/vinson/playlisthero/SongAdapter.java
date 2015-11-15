@@ -64,7 +64,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
                     downclick = false;
                     song.upVote();
                 }
-                if (!upclick) {
+                else if (!upclick) {
                     upclick = true;
                     song.upVote();
                 } else
@@ -93,7 +93,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
                     upclick = false;
                     song.downVote();
                 }
-                if(!downclick)
+                else if(!downclick)
                 {
                     downclick = true;
                     song.downVote();
