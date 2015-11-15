@@ -18,9 +18,6 @@ import java.util.List;
 
 public class MainActivity extends Activity {
 
-    Button test;
-    Button dj;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +38,7 @@ public class MainActivity extends Activity {
                 }finally{
                     Intent intent = new Intent(MainActivity.this,PlaylistPick.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         };

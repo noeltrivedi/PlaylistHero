@@ -1,6 +1,8 @@
 package itp341.compestine.vinson.playlisthero;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,9 @@ public class SongAdapter extends ArrayAdapter<Song> {
     Song song;
     boolean upclick = false;
     boolean downclick = false;
+    ImageView upVote;
+    ImageView downVote;
+
 
     public SongAdapter(Context context, ArrayList<Song> songs ){super (context, 0, songs);}
     public View getView(int position, View convertView, ViewGroup parent){
@@ -39,7 +44,8 @@ public class SongAdapter extends ArrayAdapter<Song> {
         tvAlbum.setImageDrawable(song.getSongArt());
         tvVotes.setText(song.getVotes());
 
-        ImageView upVote = (ImageView)convertView.findViewById(R.id.upVote);
+
+        upVote = (ImageView)convertView.findViewById(R.id.upVote);
         upVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,15 +61,18 @@ public class SongAdapter extends ArrayAdapter<Song> {
                     song.upVote();
                 }
                 else
+
                 {
                     upclick = false;
                     song.downVote();
                 }
+
+
                 tvVotes.setText(song.getVotes());
             }
         });
 
-        ImageView downVote = (ImageView)convertView.findViewById(R.id.downVote);
+        downVote = (ImageView)convertView.findViewById(R.id.downVote);
         downVote.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -82,6 +91,8 @@ public class SongAdapter extends ArrayAdapter<Song> {
                     downclick = false;
                     song.upVote();
                 }
+
+
                 tvVotes.setText(song.getVotes());
             }
         });
