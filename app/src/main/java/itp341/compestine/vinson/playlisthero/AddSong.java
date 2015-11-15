@@ -26,11 +26,7 @@ public class AddSong extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_song);
 
-        String suggestion;
         EditText searchBar = (EditText)findViewById(R.id.searchBar);
-<<<<<<< HEAD
-        suggestion = searchBar.getText().toString();
-=======
         searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event)
@@ -64,8 +60,6 @@ public class AddSong extends Activity {
                     Log.i("Text:", toast);
                 }
             }
->>>>>>> 89d2a827a31946a0a02e11a7fdbf29e0a0ea795b
-
             @Override
             public void failure(SpotifyError spotifyError) {
                 String toast = "Track not found";
