@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,6 +26,11 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         ActionBar actionBar = getActionBar();
         actionBar.hide();
+
+        //Allow retrieval of images
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
         setContentView(R.layout.activity_main);
 
         test = (Button)findViewById(R.id.testButton);

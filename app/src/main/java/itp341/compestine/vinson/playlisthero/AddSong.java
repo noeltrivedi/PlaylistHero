@@ -1,15 +1,22 @@
 package itp341.compestine.vinson.playlisthero;
 
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import kaaes.spotify.webapi.android.SpotifyApi;
 import kaaes.spotify.webapi.android.SpotifyCallback;
@@ -26,6 +33,13 @@ public class AddSong extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_song);
 
+        SearchSingleton searchSingleton = SearchSingleton.getInstance();
+        ArrayList<Song> songs = searchSingleton.getSongs();
+        SearchedTrackAdapter adapter= new SearchedTrackAdapter(this, songs);
+
+        ListView listView = (ListView)findViewById(R.id.searchedTracks);
+        listView.setAdapter(adapter);
+
         EditText searchBar = (EditText)findViewById(R.id.searchBar);
         searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -36,8 +50,9 @@ public class AddSong extends Activity {
                 {
                     handled = true;
                     String search = v.getText().toString();
-                    search.replace(' ', '+');
+                    search.trim().replace(' ', '+');
                     searchSong(search);
+                    Utils.hideSoftKeyboard(AddSong.this);
                 }
                 return handled;
             }
@@ -54,9 +69,10 @@ public class AddSong extends Activity {
             @Override
             public void success(TracksPager tracksPager, Response response)
             {
-               for(Track t : tracksPager.tracks.items) {
-                    String toast = "Track found: " + t.name + " by " + Utils.formatArtists(t.artists);
-                    Log.i("Text", toast);
+                SearchSingleton searchSingleton = SearchSingleton.getInstance();
+                searchSingleton.clear();
+                for(Track t : tracksPager.tracks.items) {
+                    searchSingleton.addSong(Utils.convertTrackToSong(t));
                 }
             }
             @Override

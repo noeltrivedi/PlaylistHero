@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <ImageView
+        android:layout_width="90dp"
+        android:layout_height="78dp"
+        android:id="@+id/searchedTrackAlbum"
+        android:src="@drawable/yonder"
+        android:maxHeight="32dp"
+        android:maxWidth="32dp"
+        android:minHeight="32dp"
+        android:minWidth="32dp" />
+
+    <Space
+        android:layout_width="33dp"
+        android:layout_height="20px" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Song Title"
+            android:id="@+id/searchedTrackName" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Artist"
+            android:id="@+id/searchedTrackArtist" />
+    </LinearLayout>
+</TableRow>
