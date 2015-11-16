@@ -8,6 +8,18 @@
     android:background="#FFA200"
     >
 
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:src="@drawable/suggestion_text"
+        android:layout_alignParentStart="false"
+        android:scaleType="centerInside"
+        android:layout_alignEnd="@+id/songList"
+        android:cropToPadding="false"
+        android:layout_centerHorizontal="true"
+        android:adjustViewBounds="true"/>
+
     <ImageButton
         android:layout_width="65dp"
         android:layout_height="65dp"
@@ -19,15 +31,19 @@
         android:background="@drawable/oval"
         android:src="@drawable/plus"
         android:scaleType="fitCenter"
-        android:layout_marginBottom="20dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginBottom="0dp"
+        android:layout_marginRight="0dp"
 
         />
 
     <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/songList"></ListView>
+        android:id="@+id/songList"
+        android:layout_below="@+id/imageView"
+        android:paddingBottom="75dp"
+        android:clipToPadding="false">
+    </ListView>
 
 
 </RelativeLayout>
