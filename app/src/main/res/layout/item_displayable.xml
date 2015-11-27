@@ -2,19 +2,19 @@
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/searchRow"
-    android:clickable="true">
+    android:descendantFocusability="blocksDescendants">
 
 
     <ImageView
         android:layout_width="90dp"
         android:layout_height="78dp"
-        android:id="@+id/searchedTrackAlbum"
+        android:id="@+id/drawable"
         android:src="@drawable/yonder"
         android:maxHeight="32dp"
         android:maxWidth="32dp"
         android:minHeight="32dp"
-        android:minWidth="32dp" />
+        android:minWidth="32dp"
+        android:scaleType="fitCenter" />
 
     <Space
         android:layout_width="33dp"
@@ -29,14 +29,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Song Title"
-            android:id="@+id/searchedTrackName" />
+            android:text="Title"
+            android:id="@+id/mainTitle" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Artist"
-            android:id="@+id/searchedTrackArtist" />
+            android:text="Subtitle"
+            android:id="@+id/subtitle" />
     </LinearLayout>
 </TableRow>

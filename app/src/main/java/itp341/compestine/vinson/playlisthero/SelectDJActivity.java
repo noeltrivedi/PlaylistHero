@@ -2,7 +2,6 @@ package itp341.compestine.vinson.playlisthero;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -13,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -25,43 +25,51 @@ import java.util.List;
 
 import kaaes.spotify.webapi.android.models.UserPublic;
 
-public class PlaylistPick extends Activity {
+public class SelectDJActivity extends Activity {
     private static final int SPOTIFY_REQUEST_CODE = 1337;
     private static final String REDIRECT_URI = "crowdj://callback";
 
-    PlaylistsSingleton playListSingleton;
+    AvailableDjSingleton availableDJs;
     ImageButton DJ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_playlist_pick);
+        setContentView(R.layout.activity_select_dj);
 
-        playListSingleton = PlaylistsSingleton.getInstance();
-        ArrayList<Playlist> playlists = playListSingleton.getList();
-        PlaylistAdapter adapter = new PlaylistAdapter(this, playlists);
+        availableDJs = AvailableDjSingleton.getInstance();
+        ArrayList<User> users = availableDJs.getList();
+        DisplayableAdapter<User> adapter = new DisplayableAdapter(this, users);
 
-        ListView listView = (ListView) findViewById(R.id.currentPlaylists);
+        ListView listView = (ListView) findViewById(R.id.currentDJs);
         listView.setAdapter(adapter);
 
+        //TODO: make this query in the background
         ParseQuery<ParseObject> query = ParseQuery.getQuery("DJs");
-        try {
-            List<ParseObject> DJs = query.find();
-            for(ParseObject po : DJs)
+        //find in the background so the activity won't go black waiting for it
+        query.findInBackground(new FindCallback<ParseObject>() {
+            @Override
+            public void done(List<ParseObject> objects, ParseException e)
             {
-                UserPublic user = Utils.spotify.getUser(po.getString("userID"));
-                playListSingleton.newPlaylist(Utils.convertUserToPlaylist(user));
+                for(ParseObject dj: objects)
+                {
+                    UserPublic user = Utils.spotify.getUser(dj.getString("userID"));
+                    availableDJs.newPlaylist(Utils.formatUser(user));
+
+                    ListView listView = (ListView) findViewById(R.id.currentDJs);
+                    ((DisplayableAdapter<?>)listView.getAdapter()).notifyDataSetChanged();
+                }
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        });
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(PlaylistPick.this, InsidePlaylist.class);
+
+                Intent i = new Intent(SelectDJActivity.this, SuggestionsActivity.class);
                 ListView lv = (ListView) parent;
-                Playlist p = (Playlist) lv.getAdapter().getItem(position);
-                i.putExtra("userID", p.getUserID());
+                User user = (User) lv.getAdapter().getItem(position);
+                i.putExtra("userID", user.getUserID());
                 startActivity(i);
             }
         });
@@ -70,17 +78,13 @@ public class PlaylistPick extends Activity {
         DJ.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                Intent i = new Intent(PlaylistPick.this, DJActivity.class);
-                startActivity(i);
-                */
                 AuthenticationRequest.Builder builder =
                         new AuthenticationRequest.Builder(Utils.client_id, AuthenticationResponse.Type.TOKEN, REDIRECT_URI);
 
                 builder.setScopes(new String[]{"streaming", "playlist-read-private", "playlist-read-collaborative"});
                 AuthenticationRequest request = builder.build();
 
-                AuthenticationClient.openLoginActivity(PlaylistPick.this, SPOTIFY_REQUEST_CODE, request);
+                AuthenticationClient.openLoginActivity(SelectDJActivity.this, SPOTIFY_REQUEST_CODE, request);
             }
         });
 
@@ -96,7 +100,7 @@ public class PlaylistPick extends Activity {
                 case "token":
                     String token = response.getAccessToken();
                     Utils.setAuthToken(token);
-                    Intent i = new Intent(PlaylistPick.this, DJActivity.class);
+                    Intent i = new Intent(SelectDJActivity.this, DJActivity.class);
                     startActivity(i);
                     break;
                 default:
@@ -109,7 +113,7 @@ public class PlaylistPick extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_playlist_pick, menu);
+        getMenuInflater().inflate(R.menu.menu_select_dj, menu);
         return true;
     }
 

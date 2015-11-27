@@ -1,22 +1,19 @@
 package itp341.compestine.vinson.playlisthero;
 
 import android.app.Activity;
-import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
 
@@ -26,22 +23,39 @@ import kaaes.spotify.webapi.android.models.Track;
 import kaaes.spotify.webapi.android.models.TracksPager;
 import retrofit.client.Response;
 
-public class AddSong extends Activity {
+public class SuggestionSearchActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_song);
+        setContentView(R.layout.activity_suggestion_search);
 
         SearchSingleton searchSingleton = SearchSingleton.getInstance();
         ArrayList<Song> songs = searchSingleton.getSongs();
-        SearchedTrackAdapter adapter= new SearchedTrackAdapter(this, songs);
+        DisplayableAdapter<Song> adapter = new DisplayableAdapter(this, songs);
 
-        ListView listView = (ListView)findViewById(R.id.searchedTracks);
+        ListView listView = (ListView) findViewById(R.id.searchedTracks);
         listView.setAdapter(adapter);
 
-        EditText searchBar = (EditText)findViewById(R.id.searchBar);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Song selectedSong = ((DisplayableAdapter<Song>) (parent.getAdapter())).getItem(position);
+                Utils.pushToParse(selectedSong, SuggestionsActivity.djID);
+                Toast.makeText(SuggestionSearchActivity.this,
+                        "Added " + selectedSong.getName() + " to the suggestions list",
+                        Toast.LENGTH_LONG)
+                        .show();
+
+                SongSingleton.getInstance().newSong(selectedSong);
+
+                setResult(SuggestionsActivity.RESULT_OK);
+                finishActivity(SuggestionsActivity.ADD_SONG_CODE);
+            }
+        });
+
+        EditText searchBar = (EditText) findViewById(R.id.searchBar);
         searchBar.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -51,57 +65,27 @@ public class AddSong extends Activity {
                     String search = v.getText().toString();
                     search.trim().replace(' ', '+');
                     searchSong(search);
-                    Utils.hideSoftKeyboard(AddSong.this);
+                    Utils.hideSoftKeyboard(SuggestionSearchActivity.this);
                 }
                 return handled;
             }
         });
-
     }
 
-    public void onTableRowClick(View view)
-    {
-        String songName = ((TextView)view.findViewById(R.id.searchedTrackName)).getText().toString();
-        String songArtist = ((TextView)view.findViewById(R.id.searchedTrackArtist)).getText().toString();
-        ArrayList<Song> songs = SearchSingleton.getInstance().getSongs();
-        Song song = null;
-        for(Song s : songs)
-        {
-            if(s.getName().equals(songName) && s.getArtist().equals(songArtist))
-            {
-                song = s;
-            }
-        }
-        if(song == null) {
-            Log.e("ERROR", "Error searching for track " + songName + " in the singleton array");
-            return;
-        }
-        Log.i("SongInfo", song.getSongID() + " " + song.getVotes());
-        Utils.pushToParse(song, InsidePlaylist.djID);
-        Toast.makeText(this, "Added " + song.getName() + " to the suggestions list", Toast.LENGTH_LONG).show();
-
-        SongSingleton.getInstance().newSong(song);
-
-        setResult(InsidePlaylist.RESULT_OK);
-
-        finishActivity(InsidePlaylist.ADD_SONG_CODE);
-        Intent i = new Intent(AddSong.this, InsidePlaylist.class);
-        startActivity(i);
-    }
-
-    private void searchSong(String search)
-    {
-        Utils.spotify.searchTracks(search, new SpotifyCallback<TracksPager>(){
+    private void searchSong(String search) {
+        Utils.spotify.searchTracks(search, new SpotifyCallback<TracksPager>() {
             @Override
-            public void success(TracksPager tracksPager, Response response)
-            {
+            public void success(TracksPager tracksPager, Response response) {
                 SearchSingleton searchSingleton = SearchSingleton.getInstance();
                 searchSingleton.clear();
-                for(Track t : tracksPager.tracks.items) {
-                    Log.i("TrackInfo", t.name + ": " + t.id);
-                    searchSingleton.addSong(Utils.convertTrackToSong(t));
+                for (Track t : tracksPager.tracks.items) {
+                    searchSingleton.addSong(Utils.formatTrack(t));
                 }
+
+                ListView lv = (ListView) findViewById(R.id.searchedTracks);
+                ((DisplayableAdapter<Song>) lv.getAdapter()).notifyDataSetChanged();
             }
+
             @Override
             public void failure(SpotifyError spotifyError) {
                 String toast = "Error searching for track";
@@ -113,7 +97,7 @@ public class AddSong extends Activity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_add_song, menu);
+        getMenuInflater().inflate(R.menu.menu_suggestion_search, menu);
         return true;
     }
 

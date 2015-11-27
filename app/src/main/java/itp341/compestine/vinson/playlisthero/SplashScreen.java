@@ -1,36 +1,26 @@
 package itp341.compestine.vinson.playlisthero;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
 
 import com.parse.Parse;
-import com.parse.ParseObject;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends Activity {
+public class SplashScreen extends Activity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, "y4ASkCowCyVESTVhzqZCp6Sf22R5B2QNX8HDmDvX", "jAjG1rJfKJgLQxYqJY7NOrVXnozyyb3365LJDKql");
 
-
-        //Allow retrieval of images
+        //Allow retrieval of images online
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
@@ -42,8 +32,7 @@ public class MainActivity extends Activity {
                 }catch(InterruptedException e){
                     e.printStackTrace();
                 }finally{
-                    //Intent intent = new Intent(MainActivity.this,ParseTest.class);
-                    Intent intent = new Intent(MainActivity.this, PlaylistPick.class);
+                    Intent intent = new Intent(SplashScreen.this, SelectDJActivity.class);
                     startActivity(intent);
                     finish();
                 }

@@ -1,9 +1,6 @@
 package itp341.compestine.vinson.playlisthero;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.inputmethod.InputMethodManager;
@@ -15,13 +12,9 @@ import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,11 +86,11 @@ public class Utils {
         return array;
     }
 
-    public static Playlist convertUserToPlaylist(UserPublic u)
+    public static User formatUser(UserPublic u)
     {
         if(u.images.isEmpty())
         {
-            return new Playlist(null, u.display_name, "100", u.id);
+            return new User(null, u.display_name, "100", u.id);
         }
         String playlistPicture = u.images.get(0).url;
         Drawable albumArt = null;
@@ -108,10 +101,12 @@ public class Utils {
             e.printStackTrace();
         }
 
-        return new Playlist(albumArt, u.display_name, ""+900, u.id);
+        String numListeners = "900";
+
+        return new User(albumArt, u.display_name, numListeners, u.id);
     }
 
-    public static Song convertTrackToSong(Track t)
+    public static Song formatTrack(Track t)
     {
         if(t == null)
         {
@@ -175,7 +170,7 @@ public class Utils {
     }
 
     public static void updateVotesParse(final Song song) {
-        ParseQuery<ParseObject> query = ParseQuery.getQuery(InsidePlaylist.djID);
+        ParseQuery<ParseObject> query = ParseQuery.getQuery(SuggestionsActivity.djID);
         query.whereEqualTo("songID", song.getSongID());
         query.findInBackground(new FindCallback<ParseObject>() {
             @Override

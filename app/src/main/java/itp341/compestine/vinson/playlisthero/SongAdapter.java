@@ -42,7 +42,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
         TextView tvName = (TextView)convertView.findViewById(R.id.songName);
         TextView tvArtist = (TextView)convertView.findViewById(R.id.artistName);
         ImageView tvAlbum = (ImageView)convertView.findViewById(R.id.songImage);
-        final TextView tvVotes = (TextView)convertView.findViewById(R.id.votes);
+        TextView tvVotes = (TextView)convertView.findViewById(R.id.votes);
 
         tvName.setText(song.getName());
         tvArtist.setText(song.getArtist());
@@ -58,22 +58,26 @@ public class SongAdapter extends ArrayAdapter<Song> {
                 ListView lv = (ListView)tr.getParent();
                 int position = lv.getPositionForView(tr);
                 song = getItem(position);
+
                 //Checks if user has already downvoted
-                Log.i("SongVote", song.getName() + " has " + song.getVotes() + " (" + upclick + "/" + downclick + ")");
                 if (downclick) {
                     downclick = false;
                     song.upVote();
                 }
-                else if (!upclick) {
+
+                if (!upclick) {
                     upclick = true;
                     song.upVote();
+
                 } else
                 {
                     upclick = false;
                     song.downVote();
                 }
-                tvVotes.setText(song.getVotes());
-                Log.i("SongVote", song.getName() + " has " + song.getVotes() + " (" + upclick + "/" + downclick + ")");
+
+                updateButtons((View)v.getParent());
+                TextView votes = (TextView)((View)v.getParent()).findViewById(R.id.votes);
+                votes.setText(song.getVotes());
                 sort();
                 Utils.updateVotesParse(song);
             }
@@ -93,7 +97,7 @@ public class SongAdapter extends ArrayAdapter<Song> {
                     upclick = false;
                     song.downVote();
                 }
-                else if(!downclick)
+                if(!downclick)
                 {
                     downclick = true;
                     song.downVote();
@@ -103,13 +107,40 @@ public class SongAdapter extends ArrayAdapter<Song> {
                     downclick = false;
                     song.upVote();
                 }
-                tvVotes.setText(song.getVotes());
+
+                updateButtons((View)v.getParent());
+                TextView votes = (TextView)((View)v.getParent()).findViewById(R.id.votes);
+                votes.setText(song.getVotes());
                 sort();
                 Utils.updateVotesParse(song);
             }
         });
 
         return convertView;
+    }
+
+    private void updateButtons(View parent)
+    {
+        ImageView upvoteButton = (ImageView) parent.findViewById(R.id.upVote);
+        ImageView downvoteButton = (ImageView) parent.findViewById(R.id.downVote);
+
+        if(upclick)
+        {
+            upvoteButton.setImageResource(R.drawable.up_on);
+        }
+        else
+        {
+            upvoteButton.setImageResource(R.drawable.up_off);
+        }
+
+        if(downclick)
+        {
+            downvoteButton.setImageResource(R.drawable.down_on);
+        }
+        else
+        {
+            downvoteButton.setImageResource(R.drawable.down_off);
+        }
     }
 
     private void sort()

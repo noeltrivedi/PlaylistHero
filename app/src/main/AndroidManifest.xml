@@ -11,7 +11,7 @@
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Light.NoTitleBar" >
         <activity
-            android:name=".MainActivity"
+            android:name=".SplashScreen"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,15 +20,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".PlaylistPick"
+            android:name=".SelectDJActivity"
             android:label="@string/title_activity_playlist_pick" >
         </activity>
         <activity
-            android:name=".InsidePlaylist"
+            android:name=".SuggestionsActivity"
             android:label="@string/title_activity_inside_playlist" >
         </activity>
         <activity
-            android:name=".AddSong"
+            android:name=".SuggestionSearchActivity"
             android:label="@string/title_activity_add_song" >
         </activity>
         <activity
@@ -38,10 +38,6 @@
         <activity
             android:name="com.spotify.sdk.android.authentication.LoginActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
-        </activity>
-        <activity
-            android:name=".ParseTest"
-            android:label="@string/title_activity_parse_test" >
         </activity>
     </application>
 

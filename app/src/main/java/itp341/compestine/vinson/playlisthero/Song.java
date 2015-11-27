@@ -9,7 +9,7 @@ import org.json.JSONObject;
 /**
  * Created by vcomp_000 on 11/14/2015.
  */
-public class Song {
+public class Song implements Displayable{
     String name;
     Drawable songArt;
     int votes;
@@ -95,5 +95,18 @@ public class Song {
     }
 
 
+    @Override
+    public String getTitle() {
+        return name;
+    }
 
+    @Override
+    public String getSubtitle() {
+        return artist;
+    }
+
+    @Override
+    public Drawable getArt() {
+        return songArt;
+    }
 }

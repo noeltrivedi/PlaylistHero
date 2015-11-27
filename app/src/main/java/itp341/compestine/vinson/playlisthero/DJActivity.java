@@ -101,7 +101,7 @@ public class DJActivity extends Activity implements
                             int votes = po.getInt("Votes");
 
                             Log.i("ParseTracks", songID + " with " + votes + " votes");
-                            Song newSong = Utils.convertTrackToSong(Utils.spotify.getTrack(songID));
+                            Song newSong = Utils.formatTrack(Utils.spotify.getTrack(songID));
                             newSong.setVotes(votes);
 
                             songs.add(newSong);
