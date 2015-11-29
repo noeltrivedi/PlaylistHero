@@ -51,7 +51,7 @@ public class SuggestionSearchActivity extends Activity {
                 SongSingleton.getInstance().newSong(selectedSong);
 
                 setResult(SuggestionsActivity.RESULT_OK);
-                finishActivity(SuggestionsActivity.ADD_SONG_CODE);
+                finish();
             }
         });
 
