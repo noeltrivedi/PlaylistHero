@@ -23,10 +23,10 @@ public class AvailableDjSingleton {
         return users.size();
     }
 
-    public void newPlaylist(User addUser){
+    public void newUser(User addUser){
         users.add(addUser);
     }
-    public void deletePlaylist(int position){
+    public void deleteUser(int position){
         users.remove(position);
     }
 

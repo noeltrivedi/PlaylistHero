@@ -54,7 +54,7 @@ public class SelectDJActivity extends Activity {
                 for(ParseObject dj: objects)
                 {
                     UserPublic user = Utils.spotify.getUser(dj.getString("userID"));
-                    availableDJs.newPlaylist(Utils.formatUser(user));
+                    availableDJs.newUser(Utils.formatUser(user));
 
                     ListView listView = (ListView) findViewById(R.id.currentDJs);
                     ((DisplayableAdapter<?>)listView.getAdapter()).notifyDataSetChanged();
